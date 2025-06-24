@@ -70,7 +70,7 @@ README.md
 ## Quick Start
 
 ```python
-from torch_landscape.directions import LearnableDirections, PcaDirections
+from torch_landscape.directions import PcaDirections
 from torch_landscape.landscape_linear import LinearLandscapeCalculator
 from torch_landscape.trajectory import TrajectoryCalculator
 from torch_landscape.utils import clone_parameters

@@ -7,9 +7,7 @@ from torch.linalg import eigh
 from torch.nn import Linear
 from torch.nn.utils import parameters_to_vector
 
-from torch_landscape.directions import PcaDirections, RandomDirections, normalize_direction, LearnableDirections, \
-    SvdDirections
-from torch_landscape.trajectory import TrajectoryCalculator
+from torch_landscape.directions import PcaDirections, RandomDirections, normalize_direction, SvdDirections
 
 
 class DirectionsTest(TestCase):
@@ -209,30 +207,6 @@ class DirectionsTest(TestCase):
         norm_direction_row2 = norm(direction[1], p=2).item()
         self.assertAlmostEqual(norm_parameters_row1, norm_direction_row1, 4)
         self.assertAlmostEqual(norm_parameters_row2, norm_direction_row2, 4)
-
-    def test_create_learnable_directions(self):
-        """
-        Tests if create_learnable_directions calculates directions which have approximately lower or equal
-        reconstruction error than PCA directions.
-        """
-        samples = [
-            [tensor([4.0]), tensor([11.0])],
-            [tensor([8.0]), tensor([4.0])],
-            [tensor([13.0]), tensor([5.0])],
-            [tensor([7.0]), tensor([14.0])],
-        ]
-        zero_point = samples[0]
-
-        pca_b1 = [tensor([-0.55739]), tensor([0.8303])]
-        pca_b2 = [tensor([-0.8303]), tensor([-0.5574])]
-        expected_error = TrajectoryCalculator.reconstruction_error_mean(pca_b1, pca_b2, zero_point, samples)
-
-        weights = LearnableDirections.create_learnable_directions(samples, zero_point)
-        b1, b2 = weights[-1][:,0], weights[-1][:,1]
-        error = TrajectoryCalculator.reconstruction_error_mean([b1], [b2], zero_point, samples)
-
-        self.assertLess(abs(error - expected_error), 1e-5)
-
 
 if __name__ == "__main__":
     main()
