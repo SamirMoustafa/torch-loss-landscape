@@ -2,10 +2,8 @@ import torch
 from torch import nn
 from torch.optim import SGD
 
-from torch_landscape.directions import RandomDirections
-from torch_landscape.landscape_linear import LinearLandscapeCalculator
+from torch_landscape import plot_loss_landscape_3d
 from torch_landscape.utils import seed_everything
-from torch_landscape.visualize import Plotly3dVisualization, VisualizationData, VisualizationOptions
 
 # XOR truth table
 seed_everything(0)
@@ -35,12 +33,7 @@ def evaluate():
     out = model(X).squeeze(1)
     return criterion(out, y).item()
 
-# Loss landscape calculation and plot
-params = list(model.parameters())
-directions = RandomDirections(params).calculate_directions()
-options = VisualizationOptions(num_points=100)
-landscape_calculator = LinearLandscapeCalculator(params, directions, options=options)
-landscape = landscape_calculator.calculate_loss_surface_data_model(model, evaluate)
-
-plotly_3d = Plotly3dVisualization(VisualizationOptions())
-plotly_3d.plot(VisualizationData(landscape), 'xor_two_layers_3D', title="XOR Loss Landscape Surface")
+plot_loss_landscape_3d(optimal_parameters=model.parameters(),
+                       model=model,
+                       evaluate_function=evaluate,
+                       file_directory="xor_two_layers_3D_plot")
