@@ -1,6 +1,7 @@
 <div align="center">
 
 <h1> Visualizing Torch Landscape
+<img src="https://raw.githubusercontent.com/SamirMoustafa/torch-loss-landscape/refs/heads/main/assets/torch-loss-landscape-logo.png"/>
 
 ![python-3.10](https://img.shields.io/badge/python-3.10%2B-blue)
 ![pytorch-1.13.1](https://img.shields.io/badge/torch-1.13.1%2B-orange)
